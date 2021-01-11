@@ -1,6 +1,6 @@
 from django.forms import modelformset_factory
 from django.shortcuts import render, get_object_or_404, redirect
-
+from django.contrib.auth.decorators import login_required
 from .forms import CountryForm, ImageForm
 from .models import *
 
@@ -19,7 +19,7 @@ def country_detail(request, pk):
     images = country.images.exclude(id=image.id)
     return render(request, 'country-detail.html', locals())
 
-
+@login_required(login_url='login')
 def add_country(request):
     ImageFormSet = modelformset_factory(Image, form=ImageForm, max_num=5)
     if request.method == 'POST':
